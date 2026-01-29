@@ -33,7 +33,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Roboto+Mono:wght@400;700&family=Space+Mono:wght@400;700&family=VT323&family=Inconsolata:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Ubuntu+Mono:wght@400;700&family=Fira+Code:wght@400;700&family=Major+Mono+Display&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
@@ -104,6 +105,32 @@
                                     placeholder="123 Main St&#10;City, State 12345"></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="store-phone">Store Phone</label>
+                                <input type="text" id="store-phone" placeholder="718-555-0123">
+                            </div>
+
+                            <div class="section-title">
+                                <span>Styling</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="receipt-font">Receipt Font</label>
+                                <select id="receipt-font">
+                                    <option value="'Courier New', Courier, monospace">Default Monospace</option>
+                                    <option value="'Roboto Mono', monospace">Roboto Mono</option>
+                                    <option value="'Space Mono', monospace">Space Mono</option>
+                                    <option value="'VT323', monospace">VT323 (Retro)</option>
+                                    <option value="'Inconsolata', monospace">Inconsolata</option>
+                                    <option value="'Source Code Pro', monospace">Source Code Pro</option>
+                                    <option value="'Ubuntu Mono', monospace">Ubuntu Mono</option>
+                                    <option value="'Fira Code', monospace">Fira Code</option>
+                                    <option value="'Major Mono Display', monospace">Major Mono Display</option>
+                                    <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+                                    <option value="monospace">System Monospace</option>
+                                </select>
+                            </div>
+
                             <div class="section-title">
                                 <span>Items</span>
                             </div>
@@ -135,6 +162,10 @@
                                     <input type="time" id="receipt-time-input">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="cashier-name">Cashier Name</label>
+                                <input type="text" id="cashier-name" placeholder="Guest">
+                            </div>
                         </form>
 
                         <div class="actions">
@@ -160,14 +191,14 @@
                                 </div>
                                 <h2 id="receipt-store-name">STORE NAME</h2>
                                 <p id="receipt-address">Store Address<br>City, State Zip</p>
-                                <p class="receipt-contact">718-555-0123</p>
+                                <p id="receipt-phone" class="receipt-contact">718-555-0123</p>
                             </div>
 
                             <!-- Transaction Info -->
                             <div class="transaction-info">
                                 <div class="t-row">
                                     <span>Your Cashier: </span>
-                                    <span>Guest</span>
+                                    <span id="receipt-cashier-name">Guest</span>
                                 </div>
                                 <div class="t-row">
                                     <span>Register #4</span>

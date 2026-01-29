@@ -6,6 +6,9 @@
     const taxRateInput = document.getElementById('tax-rate');
     const logoUpload = document.getElementById('logo-upload');
     const logoSizeInput = document.getElementById('logo-size');
+    const storePhoneInput = document.getElementById('store-phone');
+    const cashierNameInput = document.getElementById('cashier-name');
+    const receiptFontInput = document.getElementById('receipt-font');
 
     // Receipt Elements
     const receiptStoreName = document.getElementById('receipt-store-name');
@@ -14,6 +17,9 @@
     const receiptSubtotal = document.getElementById('receipt-subtotal');
     const receiptTax = document.getElementById('receipt-tax');
     const receiptTotal = document.getElementById('receipt-total');
+    const receiptPhone = document.getElementById('receipt-phone');
+    const receiptCashierName = document.getElementById('receipt-cashier-name');
+    const receiptPreview = document.getElementById('receipt-preview');
     const itemCountSpan = document.getElementById('item-count');
     const tcNumberSpan = document.getElementById('tc-number');
     const receiptDateDiv = document.getElementById('receipt-date');
@@ -79,6 +85,9 @@
         taxRateInput.value = '';
         logoUpload.value = '';
         logoSizeInput.value = '150';
+        storePhoneInput.value = '';
+        cashierNameInput.value = '';
+        receiptFontInput.value = "'Courier New', Courier, monospace";
 
         setDefaultDateTime();
 
@@ -96,6 +105,9 @@
 
         attachItemListeners();
         updateReceiptHeader();
+        updatePhone();
+        updateCashier();
+        updateFont();
         generateRandomTC();
         updateReceiptItems();
     }
@@ -139,6 +151,9 @@
             time: timeInput.value,
             items: items,
             total: finalTotal.toFixed(2),
+            phone: storePhoneInput.value,
+            cashier: cashierNameInput.value,
+            font: receiptFontInput.value,
             timestamp: new Date().toLocaleString()
         };
 
@@ -265,6 +280,9 @@
         logoSizeInput.value = item.logoSize || '150';
         if (dateInput) dateInput.value = item.date || '';
         if (timeInput) timeInput.value = item.time || '';
+        if (storePhoneInput) storePhoneInput.value = item.phone || '';
+        if (cashierNameInput) cashierNameInput.value = item.cashier || '';
+        if (receiptFontInput) receiptFontInput.value = item.font || "'Courier New', Courier, monospace";
 
         if (item.logoSrc && item.logoSrc.startsWith('data:')) {
             receiptLogo.src = item.logoSrc;
@@ -302,6 +320,9 @@
         updateReceiptHeader();
         updateDate();
         updateLogoSize();
+        updatePhone();
+        updateCashier();
+        updateFont();
         updateReceiptItems();
 
         showToast('Receipt loaded successfully');
@@ -331,6 +352,24 @@
         receiptStoreName.textContent = storeNameInput.value || 'STORE NAME';
         receiptStoreName.style.display = storeNameInput.value ? 'block' : 'none';
         receiptAddress.innerHTML = (storeAddressInput.value || 'Store Address\nCity, State Zip').replace(/\n/g, '<br>');
+    }
+
+    function updatePhone() {
+        receiptPhone.textContent = storePhoneInput.value || '718-555-0123';
+    }
+
+    function updateCashier() {
+        receiptCashierName.textContent = cashierNameInput.value || 'Guest';
+    }
+
+    function updateFont() {
+        const selectedFont = receiptFontInput.value;
+        receiptPreview.style.fontFamily = selectedFont;
+        // Also update all children to ensure it applies everywhere in the preview
+        const allChildren = receiptPreview.querySelectorAll('*');
+        allChildren.forEach(el => {
+            el.style.fontFamily = selectedFont;
+        });
     }
 
     function updateDate() {
@@ -467,10 +506,11 @@
             logging: false,
             onclone: (clonedDoc) => {
                 const clonedReceipt = clonedDoc.getElementById('receipt-preview');
-                clonedReceipt.style.fontFamily = "'Courier New', Courier, monospace";
+                const selectedFont = receiptFontInput.value;
+                clonedReceipt.style.fontFamily = selectedFont;
                 const allElements = clonedReceipt.querySelectorAll('*');
                 allElements.forEach(el => {
-                    el.style.fontFamily = "'Courier New', Courier, monospace";
+                    el.style.fontFamily = selectedFont;
                 });
             }
         }).then(canvas => {
@@ -518,6 +558,9 @@
 
     // Initial Setup
     updateReceiptHeader();
+    updatePhone();
+    updateCashier();
+    updateFont();
     if (!dateInput.value) setDefaultDateTime();
     generateRandomTC();
     updateReceiptItems();
@@ -529,6 +572,9 @@
     storeNameInput.addEventListener('input', updateReceiptHeader);
     storeAddressInput.addEventListener('input', updateReceiptHeader);
     taxRateInput.addEventListener('input', updateReceiptItems);
+    storePhoneInput.addEventListener('input', updatePhone);
+    cashierNameInput.addEventListener('input', updateCashier);
+    receiptFontInput.addEventListener('change', updateFont);
 
     logoUpload.addEventListener('change', handleLogoUpload);
     logoSizeInput.addEventListener('input', updateLogoSize);
