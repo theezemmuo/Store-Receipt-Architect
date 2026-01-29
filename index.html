@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Receipt Architect</title>
+    <meta name="description"
+        content="Create professionally designed custom receipts for your store. Free, easy-to-use receipt maker.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://store-receipt-architect.netlify.app/">
+    <meta property="og:title" content="Store Receipt Architect">
+    <meta property="og:description"
+        content="Create professionally designed custom receipts for your store. Free, easy-to-use receipt maker.">
+    <meta property="og:image" content="logo.png">
+
+    <link rel="stylesheet" href="styles.css">
+    <!-- html2canvas for downloading the receipt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo-area">
+                <i class="ph ph-receipt logo-icon"></i>
+                <span class="logo-text">Architect</span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-view="create">
+                    <i class="ph ph-plus-circle"></i>
+                    <span>Create</span>
+                </li>
+                <li class="nav-item" data-view="history">
+                    <i class="ph ph-clock-counter-clockwise"></i>
+                    <span>History</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- View: Create Receipt -->
+            <section id="view-create" class="view-section active">
+                <div class="split-layout">
+                    <!-- Left: Form -->
+                    <div class="editor-panel">
+                        <div class="panel-header">
+                            <h1>New Receipt</h1>
+                            <p>Customize your retail receipt</p>
+                        </div>
+
+                        <form id="receipt-form">
+                            <div class="form-group box-upload">
+                                <label for="logo-upload" class="upload-label">
+                                    <span>Upload Store Logo</span>
+                                    <input type="file" id="logo-upload" accept="image/*">
+                                </label>
+                                <div class="slider-group">
+                                    <label for="logo-size">Logo Scale</label>
+                                    <input type="range" id="logo-size" min="50" max="300" value="150">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="store-name">Store Name</label>
+                                <input type="text" id="store-name" placeholder="Target">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="store-address">Store Address</label>
+                                <textarea id="store-address" rows="3"
+                                    placeholder="123 Main St&#10;City, State 12345"></textarea>
+                            </div>
+
+                            <div class="section-title">
+                                <span>Items</span>
+                            </div>
+                            <!-- Items List -->
+                            <div id="items-container">
+                                <div class="item-row">
+                                    <input type="text" class="item-name" placeholder="Item Name">
+                                    <input type="number" class="item-price" placeholder="0.00" step="0.01">
+                                    <button type="button" class="remove-item-btn" onclick="removeItem(this)">×</button>
+                                </div>
+                            </div>
+                            <button type="button" id="add-item-btn">+ Add Item</button>
+
+                            <div class="form-group">
+                                <label for="tax-rate">Tax Rate (%)</label>
+                                <input type="number" id="tax-rate" step="0.01" placeholder="0.00">
+                            </div>
+
+                            <div class="section-title">
+                                <span>Transaction Details</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="receipt-date-input">Date</label>
+                                    <input type="date" id="receipt-date-input">
+                                </div>
+                                <div class="form-group half">
+                                    <label for="receipt-time-input">Time</label>
+                                    <input type="time" id="receipt-time-input">
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="actions">
+                            <div class="download-group">
+                                <select id="download-format">
+                                    <option value="png">PNG</option>
+                                    <option value="jpg">JPG</option>
+                                    <option value="pdf">PDF</option>
+                                </select>
+                                <button id="download-btn">Download</button>
+                            </div>
+                            <button id="reset-btn">Reset All</button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Preview -->
+                    <div class="preview-panel">
+                        <div id="receipt-preview" class="receipt-paper">
+                            <!-- Header -->
+                            <div class="receipt-header">
+                                <div id="receipt-logo-container" style="display: none;">
+                                    <img id="receipt-logo" src="" alt="Store Logo">
+                                </div>
+                                <h2 id="receipt-store-name">STORE NAME</h2>
+                                <p id="receipt-address">Store Address<br>City, State Zip</p>
+                                <p class="receipt-contact">718-555-0123</p>
+                            </div>
+
+                            <!-- Transaction Info -->
+                            <div class="transaction-info">
+                                <div class="t-row">
+                                    <span>Your Cashier: </span>
+                                    <span>Guest</span>
+                                </div>
+                                <div class="t-row">
+                                    <span>Register #4</span>
+                                    <span>Trans #9821</span>
+                                </div>
+                            </div>
+
+                            <hr class="dotted-line">
+
+                            <!-- Items Header -->
+                            <div class="items-header">
+                                <span>Item</span>
+                                <span>Price</span>
+                            </div>
+
+                            <!-- Dynamic Items -->
+                            <div id="receipt-items">
+                                <!-- JS Populated -->
+                            </div>
+
+                            <hr class="dotted-line">
+
+                            <!-- Totals -->
+                            <div class="totals-section">
+                                <div class="total-row">
+                                    <span>Subtotal</span>
+                                    <span id="receipt-subtotal">$0.00</span>
+                                </div>
+                                <div class="total-row">
+                                    <span>Tax</span>
+                                    <span id="receipt-tax">$0.00</span>
+                                </div>
+                                <div class="total-row final-total">
+                                    <span>Total</span>
+                                    <span id="receipt-total">$0.00</span>
+                                </div>
+                            </div>
+
+                            <hr class="dotted-line">
+
+                            <!-- Payment Info -->
+                            <div class="payment-info">
+                                <div class="payment-row">
+                                    <span>CASH</span>
+                                    <span id="receipt-cash">$0.00</span>
+                                </div>
+                                <div class="payment-row">
+                                    <span>CHANGE</span>
+                                    <span id="receipt-change">$0.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="receipt-footer">
+                                <p>Total Items: <span id="item-count">0</span></p>
+                                <p id="receipt-date">JAN 28, 2026 10:45 PM</p>
+                                <p>TC# <span id="tc-number">4891 4435 7070 5637 2915</span></p>
+                                <p>THANK YOU FOR SHOPPING!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View: History -->
+            <section id="view-history" class="view-section">
+                <div class="history-container">
+                    <div class="panel-header">
+                        <h1>Receipt History</h1>
+                        <p>Manage your past generated receipts</p>
+                    </div>
+                    <div class="history-table-wrapper">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Store</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-list-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                        <div id="history-empty" class="empty-state">
+                            <i class="ph ph-receipt empty-icon"></i>
+                            <h3>No receipts yet</h3>
+                            <p>Create your first receipt to see it here</p>
+                            <button onclick="switchToCreateView()" class="empty-action-btn">
+                                <i class="ph ph-plus-circle"></i> Create New
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
