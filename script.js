@@ -51,6 +51,12 @@
                 }
             });
 
+            // Update App Bar Title
+            const titleEl = document.getElementById('app-bar-title');
+            if (titleEl) {
+                titleEl.textContent = targetView === 'create' ? 'Create Receipt' : 'History';
+            }
+
             // Special Actions: Refresh table if history view
             if (targetView === 'history') {
                 renderHistoryTable();

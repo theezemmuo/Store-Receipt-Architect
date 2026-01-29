@@ -19,6 +19,13 @@
         content="Create professionally designed custom receipts for your store. Free, easy-to-use receipt maker.">
     <meta property="og:image" content="meta.png">
 
+    <!-- PWA / App Mode -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="logo.png">
+
     <link rel="stylesheet" href="styles.css">
     <!-- html2canvas for downloading the receipt -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -32,6 +39,16 @@
 </head>
 
 <body>
+    <!-- Mobile Top App Bar -->
+    <div class="mobile-app-bar">
+        <div class="app-bar-content">
+            <span id="app-bar-title">Create Receipt</span>
+            <div class="app-bar-actions">
+                <!-- Actions can go here -->
+            </div>
+        </div>
+    </div>
+
     <div class="dashboard-container">
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
