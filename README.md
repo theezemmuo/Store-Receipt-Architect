@@ -1,10 +1,10 @@
-# Store Receipt Architect 🧾
+# Store Receipt Architect
 
 A professional, free, and easy-to-use receipt generator web application. Create custom retail receipts for your business with a modern Google-style interface.
 
 ![App Screenshot](meta.png)
 
-## ✨ Features
+## Features
 
 - **Modern Dashboard UI**: Clean, responsive interface inspired by Google's Material Design 3.
 - **Real-time Preview**: See your receipt update instantly as you type.
@@ -18,7 +18,7 @@ A professional, free, and easy-to-use receipt generator web application. Create 
 - **Multiple Export Formats**: Download your receipt as **PNG**, **JPG**, or **PDF**.
 - **Toast Notifications**: Smooth visual feedback for all actions.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **HTML5**: Semantic structure.
 - **CSS3**: Vanilla CSS with CSS Variables for theming and Flexbox/Grid for layout.
@@ -29,27 +29,7 @@ A professional, free, and easy-to-use receipt generator web application. Create 
   - [Phosphor Icons](https://phosphoricons.com/): For beautiful, consistent iconography.
   - [Google Fonts](https://fonts.google.com/): Using 'Geom' (custom), 'Google Sans', and 'Inter'.
 
-## 🚀 Deployment
-
-This project is static-site ready and perfect for **Netlify**.
-
-### Deploy to Netlify
-1. Fork or push this repo to your GitHub.
-2. Log in to [Netlify](https://app.netlify.com/).
-3. Click **"Add new site"** -> **"Import from existing project"**.
-4. Select **GitHub** and choose this repository.
-5. Click **Deploy**. (No build command or output directory needed).
-
-## 💻 Local Development
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/theezemmuo/Store-Receipt-Architect.git
-   ```
-2. Open `index.html` in your browser.
-   - OR use a live server (VS Code Live Server extension recommended) for the best experience.
-
-## 📄 License
+## License
 
 This project is open source and available for personal and commercial use.
 
