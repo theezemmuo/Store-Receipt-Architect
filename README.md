@@ -2,7 +2,7 @@
 
 A professional, free, and easy-to-use receipt generator web application. Create custom retail receipts for your business with a modern Google-style interface.
 
-![App Screenshot](logo.png)
+![App Screenshot](meta.png)
 
 ## ✨ Features
 
