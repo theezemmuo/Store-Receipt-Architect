@@ -505,9 +505,20 @@ button {
 
 .barcode {
     font-family: 'Libre Barcode 39', cursive;
-    font-size: 32px;
-    margin: 10px 0;
-    letter-spacing: 2px;
+    font-size: 26px;
+    margin: 8px 0;
+    letter-spacing: 0px;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    display: block;
+}
+
+#receipt-footer-text {
+    margin-top: 8px;
+    line-height: 1.2;
+    font-weight: 500;
 }
 
 
@@ -681,6 +692,83 @@ button {
 }
 
 /* --- Responsive Design / App Mode --- */
+/* Templates */
+.receipt-paper.tpl-modern {
+    border-radius: 0;
+    padding: 24px;
+    border: 1px solid #000;
+}
+
+.receipt-paper.tpl-modern .dotted-line {
+    border-top: 1px solid #000;
+    margin: 15px 0;
+}
+
+.receipt-paper.tpl-modern .receipt-header {
+    text-align: left;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.receipt-paper.tpl-modern #receipt-store-name {
+    font-size: 20px;
+}
+
+.receipt-paper.tpl-minimalist {
+    box-shadow: none;
+    border: none;
+    padding: 30px;
+}
+
+.receipt-paper.tpl-minimalist .dotted-line {
+    display: none;
+}
+
+.receipt-paper.tpl-minimalist .receipt-header,
+.receipt-paper.tpl-minimalist .totals-section,
+.receipt-paper.tpl-minimalist .payment-info {
+    margin-bottom: 30px;
+}
+
+.receipt-paper.tpl-minimalist .items-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.receipt-paper.tpl-bold {
+    border: 3px solid #000;
+    padding: 15px;
+}
+
+.receipt-paper.tpl-bold .receipt-header {
+    background: #000;
+    color: #fff;
+    padding: 10px;
+}
+
+.receipt-paper.tpl-bold .receipt-header * {
+    color: #fff;
+}
+
+.receipt-paper.tpl-bold .items-header,
+.receipt-paper.tpl-bold .totals-section {
+    background: #000;
+    color: #fff;
+    padding: 4px 8px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    text-transform: uppercase;
+}
+
+.receipt-paper.tpl-bold .items-header * {
+    color: #fff;
+}
+
+.receipt-paper.tpl-bold .dotted-line {
+    border-top: 2px solid #000;
+}
+
 @media (max-width: 768px) {
     body {
         height: 100vh;
@@ -808,6 +896,7 @@ button {
         padding: 4px;
         /* hit area */
     }
+
 
     .nav-item span {
         font-weight: 500;

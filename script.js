@@ -9,6 +9,12 @@
     const storePhoneInput = document.getElementById('store-phone');
     const cashierNameInput = document.getElementById('cashier-name');
     const receiptFontInput = document.getElementById('receipt-font');
+    const receiptTemplateInput = document.getElementById('receipt-template');
+    const registerNumInput = document.getElementById('register-num');
+    const transNumInput = document.getElementById('trans-num');
+    const paymentMethodInput = document.getElementById('payment-method');
+    const cardLast4Input = document.getElementById('card-last4');
+    const footerNoteInput = document.getElementById('footer-note');
 
     // Receipt Elements
     const receiptStoreName = document.getElementById('receipt-store-name');
@@ -20,6 +26,12 @@
     const receiptPhone = document.getElementById('receipt-phone');
     const receiptCashierName = document.getElementById('receipt-cashier-name');
     const receiptPreview = document.getElementById('receipt-preview');
+    const receiptRegisterLabel = document.getElementById('receipt-register-label');
+    const receiptTransLabel = document.getElementById('receipt-trans-label');
+    const receiptPaymentMethodLabel = document.getElementById('receipt-payment-method');
+    const receiptFooterText = document.getElementById('receipt-footer-text');
+    const receiptPaymentRow = document.getElementById('receipt-payment-row');
+    const receiptChangeRow = document.getElementById('receipt-change-row');
     const itemCountSpan = document.getElementById('item-count');
     const tcNumberSpan = document.getElementById('tc-number');
     const receiptDateDiv = document.getElementById('receipt-date');
@@ -88,6 +100,12 @@
         storePhoneInput.value = '';
         cashierNameInput.value = '';
         receiptFontInput.value = "'Courier New', Courier, monospace";
+        receiptTemplateInput.value = "tpl-standard";
+        registerNumInput.value = '';
+        transNumInput.value = '';
+        paymentMethodInput.value = 'CASH';
+        cardLast4Input.value = '';
+        footerNoteInput.value = '';
 
         setDefaultDateTime();
 
@@ -108,6 +126,7 @@
         updatePhone();
         updateCashier();
         updateFont();
+        updateTemplate();
         generateRandomTC();
         updateReceiptItems();
     }
@@ -154,6 +173,12 @@
             phone: storePhoneInput.value,
             cashier: cashierNameInput.value,
             font: receiptFontInput.value,
+            template: receiptTemplateInput.value,
+            registerNum: registerNumInput.value,
+            transNum: transNumInput.value,
+            paymentMethod: paymentMethodInput.value,
+            cardLast4: cardLast4Input.value,
+            footerNote: footerNoteInput.value,
             timestamp: new Date().toLocaleString()
         };
 
@@ -283,6 +308,12 @@
         if (storePhoneInput) storePhoneInput.value = item.phone || '';
         if (cashierNameInput) cashierNameInput.value = item.cashier || '';
         if (receiptFontInput) receiptFontInput.value = item.font || "'Courier New', Courier, monospace";
+        if (receiptTemplateInput) receiptTemplateInput.value = item.template || "tpl-standard";
+        if (registerNumInput) registerNumInput.value = item.registerNum || '';
+        if (transNumInput) transNumInput.value = item.transNum || '';
+        if (paymentMethodInput) paymentMethodInput.value = item.paymentMethod || 'CASH';
+        if (cardLast4Input) cardLast4Input.value = item.cardLast4 || '';
+        if (footerNoteInput) footerNoteInput.value = item.footerNote || '';
 
         if (item.logoSrc && item.logoSrc.startsWith('data:')) {
             receiptLogo.src = item.logoSrc;
@@ -323,6 +354,7 @@
         updatePhone();
         updateCashier();
         updateFont();
+        updateTemplate();
         updateReceiptItems();
 
         showToast('Receipt loaded successfully');
@@ -362,6 +394,15 @@
         receiptCashierName.textContent = cashierNameInput.value || 'Guest';
     }
 
+    function updateStoreDetails() {
+        receiptRegisterLabel.textContent = `Register #${registerNumInput.value || '4'}`;
+        receiptTransLabel.textContent = `Trans #${transNumInput.value || '9821'}`;
+    }
+
+    function updateFooterNote() {
+        receiptFooterText.innerHTML = (footerNoteInput.value || 'THANK YOU FOR SHOPPING!').replace(/\n/g, '<br>');
+    }
+
     function updateFont() {
         const selectedFont = receiptFontInput.value;
         receiptPreview.style.fontFamily = selectedFont;
@@ -370,6 +411,14 @@
         allChildren.forEach(el => {
             el.style.fontFamily = selectedFont;
         });
+    }
+
+    function updateTemplate() {
+        const selectedTemplate = receiptTemplateInput.value;
+        // Remove existing template classes
+        receiptPreview.classList.remove('tpl-standard', 'tpl-modern', 'tpl-minimalist', 'tpl-bold');
+        // Add selected class
+        receiptPreview.classList.add(selectedTemplate);
     }
 
     function updateDate() {
@@ -472,12 +521,28 @@
         receiptTotal.textContent = formatMoney(total);
         itemCountSpan.textContent = count;
 
-        let realisticCash = Math.ceil(total / 10) * 10;
-        if (realisticCash < total) realisticCash = total;
-        if (total === 0) realisticCash = 0;
+        updatePaymentDisplay(total);
+    }
 
-        document.getElementById('receipt-cash').textContent = formatMoney(realisticCash);
-        document.getElementById('receipt-change').textContent = formatMoney(realisticCash - total);
+    function updatePaymentDisplay(total) {
+        const method = paymentMethodInput.value;
+        const last4 = cardLast4Input.value;
+
+        if (method === 'CASH') {
+            receiptPaymentMethodLabel.textContent = 'CASH';
+            receiptChangeRow.style.display = 'flex';
+
+            let realisticCash = Math.ceil(total / 10) * 10;
+            if (realisticCash < total) realisticCash = total;
+            if (total === 0) realisticCash = 0;
+
+            document.getElementById('receipt-cash').textContent = formatMoney(realisticCash);
+            document.getElementById('receipt-change').textContent = formatMoney(realisticCash - total);
+        } else {
+            receiptPaymentMethodLabel.textContent = `${method} ****${last4 || '1234'}`;
+            receiptChangeRow.style.display = 'none';
+            document.getElementById('receipt-cash').textContent = formatMoney(total);
+        }
     }
 
     function formatMoney(amount) {
@@ -561,6 +626,9 @@
     updatePhone();
     updateCashier();
     updateFont();
+    updateTemplate();
+    updateStoreDetails();
+    updateFooterNote();
     if (!dateInput.value) setDefaultDateTime();
     generateRandomTC();
     updateReceiptItems();
@@ -575,6 +643,12 @@
     storePhoneInput.addEventListener('input', updatePhone);
     cashierNameInput.addEventListener('input', updateCashier);
     receiptFontInput.addEventListener('change', updateFont);
+    receiptTemplateInput.addEventListener('change', updateTemplate);
+    registerNumInput.addEventListener('input', updateStoreDetails);
+    transNumInput.addEventListener('input', updateStoreDetails);
+    paymentMethodInput.addEventListener('change', () => updateReceiptItems());
+    cardLast4Input.addEventListener('input', () => updateReceiptItems());
+    footerNoteInput.addEventListener('input', updateFooterNote);
 
     logoUpload.addEventListener('change', handleLogoUpload);
     logoSizeInput.addEventListener('input', updateLogoSize);

@@ -34,7 +34,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Roboto+Mono:wght@400;700&family=Space+Mono:wght@400;700&family=VT323&family=Inconsolata:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Ubuntu+Mono:wght@400;700&family=Fira+Code:wght@400;700&family=Major+Mono+Display&family=JetBrains+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Roboto+Mono:wght@400;700&family=Space+Mono:wght@400;700&family=VT323&family=Inconsolata:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Ubuntu+Mono:wght@400;700&family=Fira+Code:wght@400;700&family=Major+Mono+Display&family=JetBrains+Mono:wght@400;700&family=Libre+Barcode+39&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
@@ -115,6 +115,16 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="receipt-template">Receipt Template</label>
+                                <select id="receipt-template">
+                                    <option value="tpl-standard">Standard Thermal</option>
+                                    <option value="tpl-modern">Modern Edge</option>
+                                    <option value="tpl-minimalist">Minimalist</option>
+                                    <option value="tpl-bold">Bold Classic</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="receipt-font">Receipt Font</label>
                                 <select id="receipt-font">
                                     <option value="'Courier New', Courier, monospace">Default Monospace</option>
@@ -166,6 +176,47 @@
                                 <label for="cashier-name">Cashier Name</label>
                                 <input type="text" id="cashier-name" placeholder="Guest">
                             </div>
+
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="register-num">Register #</label>
+                                    <input type="text" id="register-num" placeholder="4">
+                                </div>
+                                <div class="form-group half">
+                                    <label for="trans-num">Trans #</label>
+                                    <input type="text" id="trans-num" placeholder="9821">
+                                </div>
+                            </div>
+
+                            <div class="section-title">
+                                <span>Payment</span>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="payment-method">Method</label>
+                                    <select id="payment-method">
+                                        <option value="CASH">Cash</option>
+                                        <option value="VISA">Visa</option>
+                                        <option value="MASTERCARD">Mastercard</option>
+                                        <option value="AMEX">Amex</option>
+                                        <option value="DISCOVER">Discover</option>
+                                    </select>
+                                </div>
+                                <div class="form-group half">
+                                    <label for="card-last4">Last 4 Digits</label>
+                                    <input type="text" id="card-last4" placeholder="1234" maxlength="4">
+                                </div>
+                            </div>
+
+                            <div class="section-title">
+                                <span>Footer</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="footer-note">Policy / Footer Note</label>
+                                <textarea id="footer-note" rows="2"
+                                    placeholder="THANK YOU FOR SHOPPING!&#10;ALL SALES FINAL AFTER 30 DAYS"></textarea>
+                            </div>
                         </form>
 
                         <div class="actions">
@@ -201,8 +252,8 @@
                                     <span id="receipt-cashier-name">Guest</span>
                                 </div>
                                 <div class="t-row">
-                                    <span>Register #4</span>
-                                    <span>Trans #9821</span>
+                                    <span id="receipt-register-label">Register #4</span>
+                                    <span id="receipt-trans-label">Trans #9821</span>
                                 </div>
                             </div>
 
@@ -241,11 +292,11 @@
 
                             <!-- Payment Info -->
                             <div class="payment-info">
-                                <div class="payment-row">
-                                    <span>CASH</span>
+                                <div id="receipt-payment-row" class="payment-row">
+                                    <span id="receipt-payment-method">CASH</span>
                                     <span id="receipt-cash">$0.00</span>
                                 </div>
-                                <div class="payment-row">
+                                <div id="receipt-change-row" class="payment-row">
                                     <span>CHANGE</span>
                                     <span id="receipt-change">$0.00</span>
                                 </div>
@@ -256,7 +307,7 @@
                                 <p>Total Items: <span id="item-count">0</span></p>
                                 <p id="receipt-date">JAN 28, 2026 10:45 PM</p>
                                 <p>TC# <span id="tc-number">4891 4435 7070 5637 2915</span></p>
-                                <p>THANK YOU FOR SHOPPING!</p>
+                                <p id="receipt-footer-text">THANK YOU FOR SHOPPING!</p>
                             </div>
                         </div>
                     </div>
